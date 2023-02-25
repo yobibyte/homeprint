@@ -57,6 +57,11 @@ def print_file():
       print_cmd = f"lp -n1 -o media=a4 -o number-up=1 -o fit-to-page -o sides=one-sided {file_path}"
       if len(pages_range) > 1:
         print_cmd+=f" -P {pages_range}"
+      n_copies = request.form['copies']
+      if not n_copies.isnumeric():
+        n_copies = "1"
+      print_cmd += f" -n {n_copies}"
+      
       print(print_cmd)
       process = subprocess.Popen(print_cmd.split(), stdout=subprocess.PIPE)
       output, error = process.communicate()
@@ -71,6 +76,7 @@ def print_file():
     <input type=file name=file>
     <p>Page from (including): <input name="page_from"></p>
     <p>Page to (including): <input name="page_to"></p>
+    <p>Copies: <input name="copies" value="1"></p>
     <input type=submit value=PRINT>
   </form>
   '''
