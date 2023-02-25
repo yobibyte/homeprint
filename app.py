@@ -46,8 +46,18 @@ def print_file():
       file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
     
       # print file now
-
+      pages_range = "-"
+      page_from = request.form['page_from']
+      if page_from.isnumeric():
+        pages_range = page_from + pages_range
+      page_to= request.form['page_to']
+      if page_to.isnumeric():
+        pages_range = pages_range + page_to
+      print(pages_range)
       print_cmd = f"lp -n1 -o media=a4 -o number-up=1 -o fit-to-page -o sides=one-sided {file_path}"
+      if len(pages_range) > 1:
+        print_cmd+=f" -P {pages_range}"
+      print(print_cmd)
       process = subprocess.Popen(print_cmd.split(), stdout=subprocess.PIPE)
       output, error = process.communicate()
       print(output)
@@ -56,10 +66,12 @@ def print_file():
   return '''
   <!doctype html>
   <title>Upload new File</title>
-  <h1>Upload new File</h1>
+  <h1>Hello! Upload a file to print...</h1>
   <form method=post enctype=multipart/form-data>
     <input type=file name=file>
-    <input type=submit value=Upload>
+    <p>Page from (including): <input name="page_from"></p>
+    <p>Page to (including): <input name="page_to"></p>
+    <input type=submit value=PRINT>
   </form>
   '''
 
