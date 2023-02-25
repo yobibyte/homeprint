@@ -6,6 +6,7 @@ from flask import flash
 from werkzeug.utils import secure_filename
 
 import os
+import subprocess
 
 # flask flash requires it set up
 SECRET_KEY = os.getenv('SECRET_KEY', 'debug') 
@@ -41,7 +42,16 @@ def print_file():
       return redirect(request.url)
     if file and allowed_file(file.filename):
       filename = secure_filename(file.filename)
+      file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
       file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+    
+      # print file now
+
+      print_cmd = f"lp -n1 -o media=a4 -o number-up=1 -o fit-to-page -o sides=one-sided {file_path}"
+      process = subprocess.Popen(print_cmd.split(), stdout=subprocess.PIPE)
+      output, error = process.communicate()
+      print(output)
+
       return redirect(url_for('print_file', name=filename))
   return '''
   <!doctype html>
