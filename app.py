@@ -12,7 +12,7 @@ import subprocess
 SECRET_KEY = os.getenv('SECRET_KEY', 'debug') 
 
 FILES_FOLDER = './files'
-ALLOWED_EXTENSIONS = {'txt', 'pdf'}
+ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png'}
 
 if not os.path.exists(FILES_FOLDER):
   os.makedirs(FILES_FOLDER) 
