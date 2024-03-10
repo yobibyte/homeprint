@@ -22,8 +22,7 @@ app.config['UPLOAD_FOLDER'] = FILES_FOLDER
 app.secret_key = SECRET_KEY
 
 def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+    return '.' in filename and any([filename.lower().endswith(ext) for ext in ALLOWED_EXTENSIONS])
 
 @app.route('/', methods=['GET', 'POST'])
 def print_file():
