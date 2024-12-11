@@ -8,6 +8,8 @@ from werkzeug.utils import secure_filename
 import os
 import subprocess
 
+FIT_TO_PAGE = False
+
 # flask flash requires it set up
 SECRET_KEY = os.getenv('SECRET_KEY', 'debug') 
 
@@ -53,7 +55,10 @@ def print_file():
       if page_to.isnumeric():
         pages_range = pages_range + page_to
       print(pages_range)
-      print_cmd = f"lp -o media=a4 -o fit-to-page -o sides=one-sided {file_path}"
+      if FIT_TO_PAGE:
+          print_cmd = f"lp -o media=a4 -o fit-to-page -o sides=one-sided {file_path}"
+      else:
+          print_cmd = f"lp -o media=a4 -o sides=one-sided {file_path}"
       if len(pages_range) > 1:
         print_cmd+=f" -P {pages_range}"
       n_copies = request.form['copies']
