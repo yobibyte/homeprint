@@ -53,7 +53,7 @@ def print_file():
       if page_to.isnumeric():
         pages_range = pages_range + page_to
       print(pages_range)
-      print_cmd = f"lp -n1 -o media=a4 -o fit-to-page -o sides=one-sided {file_path}"
+      print_cmd = f"lp -o media=a4 -o fit-to-page -o sides=one-sided {file_path}"
       if len(pages_range) > 1:
         print_cmd+=f" -P {pages_range}"
       n_copies = request.form['copies']
